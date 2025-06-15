@@ -82,10 +82,37 @@ PremiumSense/
    ```
 3. **Initialize DVC**
    ```bash
-   pip init dvc
-   dvc pull
+    pip install dvc                # install the DVC CLI
+    dvc init                       # initialize DVC in the repo
+    git add .dvc
+    git commit -m "Initialize DVC"
    ```
-4. **Run the notebooks**
+4. **Track raw data and define pipeline**
+
+   ```bash
+   # 1) Track raw claims data
+    dvc add data/MachineLearningRating.txt
+    git add data/MachineLearningRating.txt.dvc
+    git commit -m "Track raw claims data with DVC"
+
+    # 2) Define cleaning stage
+    dvc stage add \
+    --name clean \
+    --deps scripts/data_cleaning.py \
+    --deps data/MachineLearningRating.txt \
+    --outs data/claims_clean.csv \
+    "python scripts/data_cleaning.py"
+    git add dvc.yaml dvc.lock
+    git commit -m "Add 'clean' stage to DVC pipeline"
+
+   ```
+
+5. **Pull data & reproduce pipeline**
+   ```bash
+   dvc pull data/MachineLearningRating.txt.dvc
+   dvc repro
+   ```
+6. **Run the notebooks**
    ```bash
    jupyter notebook
    ```
@@ -139,4 +166,3 @@ Work through the notebooks in numeric order:
 - Incorporate expense & profit loadings
 - Deploy pipeline to production with CI/CD
 - Monitor live model performance and recalibrate quarterly
-
