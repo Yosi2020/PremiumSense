@@ -30,10 +30,10 @@ Run these in order to reproduce the full PremiumSense workflow:
 
 ---
 
-| **Notebook**                     | **Purpose**                                                                                                   |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| **1_data_understanding.ipynb**   | Load raw Feb 2014–Aug 2015 data; inspect schema, dtypes, missingness; compute overall & by-group loss ratios. |
-| **2_data_cleaning.ipynb**        | Impute/drop missing values; convert dtypes; cap outliers; save cleaned dataset.                               |
-| **3_exploratory_analysis.ipynb** | Plot univariate distributions & bivariate trends; create 3 key insight plots.                                 |
-| **4_hypothesis_testing.ipynb**   | Define metrics; segment data; run χ², t-tests, ANOVA; interpret business impact.                              |
-| **5_predictive_modeling.ipynb**  | Train/test split; regression & classification models; evaluate metrics; SHAP feature-importance analysis.     |
+| **Notebook**                          | **Purpose**                                                                                                   |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **1_Exploratory_Data_Analysis.ipynb** | Load raw Feb 2014–Aug 2015 data; inspect schema, dtypes, missingness; compute overall & by-group loss ratios. |
+| **data_cleaning**                     | Impute/drop missing values; convert dtypes; cap outliers; save cleaned dataset.                               |
+| **exploratory_analysis**              | Plot univariate distributions & bivariate trends; create 3 key insight plots.                                 |
+| **2_hypothesis_testing.ipynb**        | Define metrics; segment data; run χ², t-tests, ANOVA; interpret business impact.                              |
+| **3_predictive_modeling.ipynb**       | Train/test split; regression & classification models; evaluate metrics; SHAP feature-importance analysis.     |
