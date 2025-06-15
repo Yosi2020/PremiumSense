@@ -140,6 +140,3 @@ Work through the notebooks in numeric order:
 - Deploy pipeline to production with CI/CD
 - Monitor live model performance and recalibrate quarterly
 
----
-
-© 2025 AlphaCare Insurance Solutions (ACIS) — internal prototype.
