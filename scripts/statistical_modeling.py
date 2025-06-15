@@ -45,7 +45,7 @@ def preprocess_features(df: pd.DataFrame, target_reg: str, target_clf: str=None)
     ])
     cat_pipe = Pipeline([
         ("imputer", SimpleImputer(strategy="constant", fill_value="Unknown")),
-        ("onehot",  OneHotEncoder(handle_unknown="ignore", sparse=False))
+        ("onehot",  OneHotEncoder(handle_unknown="ignore"))
     ])
     preprocessor = ColumnTransformer([
         ("num", num_pipe, num_cols),
@@ -113,26 +113,47 @@ def evaluate_classification(models: dict, X_test, y_test):
         }
     return pd.DataFrame(results).T
 
-def compute_shap_importance(model_pipe, X_sample):
-    """
-    Returns a DataFrame of mean(|SHAP|) per feature.
-    model_pipe must support .predict or .predict_proba.
-    """
-    # Extract preprocessor and model
-    preprocessor = model_pipe.named_steps["prep"]
-    model        = model_pipe.named_steps["model"]
-
-    # Transform X_sample
-    X_trans = preprocessor.transform(X_sample)
-    # SHAP explainer
-    explainer = shap.Explainer(model, X_trans)
-    shap_values = explainer(X_trans)
-    # mean absolute shap per feature
+def compute_shap_importance(model_pipe, X_sample: pd.DataFrame) -> pd.DataFrame:
+    # 1. Extract preprocessor and model
+    preprocessor = model_pipe.named_steps['prep']
+    model        = model_pipe.named_steps['model']
+    
+    # 2. Preprocess the sample
+    X_pre = preprocessor.transform(X_sample)
+    # Convert sparse to dense if needed
+    if hasattr(X_pre, "toarray"):
+        X_pre = X_pre.toarray().astype(float)
+    
+    # 3. Create a TreeExplainer and compute SHAP values
+    explainer   = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(X_pre)
+    # If shap_values is a list (e.g. multi-output), take the first output
+    if isinstance(shap_values, list):
+        shap_values = shap_values[0]
+    
+    # 4. Reconstruct feature names
+    try:
+        # scikit-learn ≥1.0
+        feature_names = preprocessor.get_feature_names_out()
+    except AttributeError:
+        # Older versions: build manually
+        # numeric feature names
+        numeric_features = preprocessor.transformers_[0][2]
+        # categorical features and one-hot names
+        cat_transformer  = preprocessor.transformers_[1][1]
+        cat_cols         = preprocessor.transformers_[1][2]
+        ohe              = cat_transformer.named_steps['onehot']
+        cat_feature_names = ohe.get_feature_names_out(cat_cols)
+        feature_names     = np.concatenate([numeric_features, cat_feature_names])
+    
+    # 5. Compute mean absolute SHAP per feature
     shap_df = pd.DataFrame({
-        "feature": preprocessor.get_feature_names_out(),
-        "mean_abs_shap": np.abs(shap_values.values).mean(axis=0)
-    }).sort_values("mean_abs_shap", ascending=False)
-    return shap_df
+        'feature': feature_names,
+        'mean_abs_shap': np.abs(shap_values).mean(axis=0)
+    })
+    
+    # 6. Sort and return
+    return shap_df.sort_values('mean_abs_shap', ascending=False).reset_index(drop=True)
 
 def compute_risk_based_premium(pipe_clf, pipe_reg, X):
     """
