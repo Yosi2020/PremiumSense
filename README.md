@@ -53,11 +53,11 @@ PremiumSense/
 │ ├── hypothesis_testing.py # χ², ANOVA, z-test wrappers
 │ └── statistical_modeling.py # pipelines, model training, SHAP, premium calc
 ├── notebooks/
-│ ├── 1_data_understanding.ipynb # schema, missingness, summary stats
-│ ├── 2_data_cleaning.ipynb # cleaning steps & output
-│ ├── 3_exploratory_analysis.ipynb # univariate, bivariate, temporal EDA
-│ ├── 4_hypothesis_testing.ipynb # hypothesis tests & effect sizes
-│ └── 5_predictive_modeling.ipynb # regression, classification, SHAP, pricing
+│ ├── 1_Exploratory_Data_Analysis.ipynb # schema, missingness, summary stats
+│ ├── data_cleaning # cleaning steps & output
+│ ├── exploratory_analysis # univariate, bivariate, temporal EDA
+│ ├── 2_hypothesis_testing.ipynb # hypothesis tests & effect sizes
+│ └── 3_predictive_modeling.ipynb # regression, classification, SHAP, pricing
 ├── .gitignore
 ├── dvc.yaml & .dvc/ # DVC pipeline & metadata
 ├── dvc.lock
@@ -96,19 +96,17 @@ PremiumSense/
 
 Work through the notebooks in numeric order:
 
-1. **1_data_understanding.ipynb**  
+1. **1_Exploratory_Data_Analysis.ipynb**  
    Inspect raw data, types, missingness, and compute overall loss ratio.
-
-2. **2_data_cleaning.ipynb**  
+   **data_cleaning**  
    Apply cleaning pipeline, handle missing values and outliers, export `claims_clean.csv`.
-
-3. **3_exploratory_analysis.ipynb**  
+   **exploratory_analysis**  
    Generate plots and tables to reveal geographic, temporal, and vehicle-based insights.
 
-4. **4_hypothesis_testing.ipynb**  
+2. **2_hypothesis_testing.ipynb**  
    Conduct A/B tests on key risk drivers, compute effect sizes, and produce business recommendations.
 
-5. **5_predictive_modeling.ipynb**  
+3. **3_predictive_modeling.ipynb**  
    Train & evaluate regression and classification models, interpret with SHAP, and calculate risk-based premiums.
 
 ---
