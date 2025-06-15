@@ -6,24 +6,22 @@ Run these in order to reproduce the full PremiumSense workflow:
   • Load raw Feb 2014–Aug 2015 data  
   • Inspect schema, data types, missingness  
   • Compute overall & by-group loss ratios
-
-- **2_data_cleaning.ipynb**  
+  **data_cleaning.ipynb**  
   • Impute or drop missing values  
   • Convert dtypes (dates, categoricals)  
   • Cap outliers & save cleaned dataset
-
-- **3_exploratory_analysis.ipynb**  
+  **exploratory_analysis.ipynb**  
   • Univariate distributions (histograms, bar charts)  
   • Bivariate/multivariate trends (scatter plots, correlation heatmap)  
   • Produce 3 key “insight” plots
 
-- **4_hypothesis_testing.ipynb**  
+- **2_hypothesis_testing.ipynb**  
   • Define risk (frequency, severity) & margin metrics  
   • Segment by province, postal code, gender  
   • Run χ², t-tests, ANOVA  
   • Interpret results in business terms
 
-- **5_predictive_modeling.ipynb**  
+- **3_predictive_modeling.ipynb**  
   • Prepare train/test splits  
   • Build regression models for claim severity (Linear, RF, XGBoost)  
   • Build classification model for claim probability  
